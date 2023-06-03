@@ -31,7 +31,8 @@ jobs:
           zip -r release-source-mic.zip mic/
       
       - name: Create Release
-        uses: actions/create-release@v2
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -41,5 +42,13 @@ jobs:
             Add release notes or description here
           draft: false
           prerelease: false
-          asset_paths: |
-            release-source.zip
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-source.zip
+          asset_name: release-source.zip
+          asset_content_type: application/zip
