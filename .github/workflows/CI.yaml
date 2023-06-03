@@ -40,11 +40,13 @@ jobs:
           # Create a zip file containing all the files in the 'mic' folder
           zip -r release-source.zip mic/
       
-      - name: Create Release
+     - name: Create Release
         id: create_release
         run: |
-          # Create the release using the 'gh' CLI
+          # Create the release using the 'gh' CLI with the PAT
           gh release create ${{ steps.next_release.outputs.next_release }} release-source.zip --title "Release ${{ steps.next_release.outputs.next_release }}" --notes "Add release notes or description here" --draft false --prerelease false
+        env:
+          GITHUB_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
