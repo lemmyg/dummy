@@ -24,7 +24,10 @@ jobs:
           mkdir -p /tmp/output
           zip -r /tmp/output/release-source-mic.zip mic/
           zip -r /tmp/output/release-source-speakers.zip speakers/
-
+      
+      - name: Extract tag version
+        id: extract_tag
+        run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
       - name: "Release"
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -32,7 +35,7 @@ jobs:
           files: |
             /tmp/output/release-source-*.zip
           tag_name: ${{ github.ref }}
-          name: Release ${{ replace(github.ref, 'refs/tags/', '') }}
+          name: Release ${{ steps.extract_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
