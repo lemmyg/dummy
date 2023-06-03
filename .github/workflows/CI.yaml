@@ -17,17 +17,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Generate Release Source
+
+      - name: Generate Release Source Mic
         run: |
           # Create a zip file containing all the files in the 'mic' folder
           mkdir -p /tmp/output
-          zip -r /tmp/output/release-source.zip mic/
+          zip -r /tmp/output/release-source-mic.zip mic/
+          zip -r /tmp/output/release-source-speakers.zip speakers/
+
       - name: "Release"
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             /tmp/output/release-source.zip
+            /tmp/output/release-source-speakers.zip
           #prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
