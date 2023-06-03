@@ -44,7 +44,7 @@ jobs:
         id: create_release
         run: |
           # Create the release using the 'gh' CLI with the PAT
-          gh release create ${{ steps.next_release.outputs.next_release }} release-source.zip --title "Release ${{ steps.next_release.outputs.next_release }}" --notes "Add release notes or description here" --draft false --prerelease false
+          gh release create ${{ steps.next_release.outputs.next_release }} release-source.zip --title "Release ${{ steps.next_release.outputs.next_release }}" --notes "Add release notes or description here"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
