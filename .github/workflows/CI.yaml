@@ -32,7 +32,6 @@ jobs:
           files: |
             /tmp/output/release-source.zip
             /tmp/output/release-source-speakers.zip
-          #prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
