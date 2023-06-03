@@ -6,7 +6,7 @@ on:
       - 'v*' # Trigger on any tag starting with 'v'
 
 jobs:
-  auto_release_job:
+  auto_release_mic:
     runs-on: ubuntu-latest
     
     defaults:
@@ -23,7 +23,6 @@ jobs:
           # Create a zip files containing all the files in the 'mic' and 'speakers' folders
           mkdir -p /tmp/output
           zip -r /tmp/output/release-source-mic.zip mic/
-          zip -r /tmp/output/release-source-speakers.zip speakers/
       
       - name: Extract tag version
         id: extract_tag
@@ -38,14 +37,34 @@ jobs:
           name: t2-apple-mic-${{ steps.extract_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: "ReleaseSpeakers"
+  auto_release_speakers:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ github.workspace }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Generate Release Source Mic
+        run: |
+          # Create a zip files containing all the files in the 'mic' and 'speakers' folders
+          mkdir -p /tmp/output
+          zip -r /tmp/output/release-source-speakers.zip speakers/
+      
+      - name: Extract tag version
+        id: extract_tag
+        run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+      - name: "ReleaseMic"
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             /tmp/output/release-source-speakers.zip
           tag_name: ${{ github.ref }}
-          name: t2-apple-speakers-${{ steps.extract_tag.outputs.tag }}
+          name: t2-apple-mic-${{ steps.extract_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
