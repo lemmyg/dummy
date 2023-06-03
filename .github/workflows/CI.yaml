@@ -30,8 +30,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            /tmp/output/release-source.zip
-            /tmp/output/release-source-speakers.zip
+            /tmp/output/release-source-*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
