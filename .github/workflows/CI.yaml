@@ -28,7 +28,7 @@ jobs:
       - name: Extract tag version
         id: extract_tag
         run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
-      - name: "Release Mic"
+      - name: "ReleaseMic"
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
@@ -38,7 +38,7 @@ jobs:
           name: t2-apple-mic-${{ steps.extract_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: "Release Speakers"
+      - name: "ReleaseSpeakers"
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
