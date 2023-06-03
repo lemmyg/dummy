@@ -32,7 +32,7 @@ jobs:
           files: |
             /tmp/output/release-source-*.zip
           tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
+          name: Release ${{ tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
