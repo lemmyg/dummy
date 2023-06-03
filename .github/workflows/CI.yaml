@@ -6,7 +6,7 @@ on:
       - 'speakers-v*' # Trigger on any tag starting with 'v'
 
 jobs:
-  auto_release_mic:
+  auto_release_speakers:
     runs-on: ubuntu-latest
     
     defaults:
@@ -34,7 +34,7 @@ jobs:
           files: |
             /tmp/output/release-source-speakers.zip
           tag_name: ${{ github.ref }}
-          name: t2-apple-speakers-${{ steps.extract_tag.outputs.tag }}
+          name: t2-apple-${{ steps.extract_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
