@@ -39,6 +39,7 @@ jobs:
         run: |
           # Create a zip file containing all the files in the 'mic' folder
           zip -r release-source.zip mic/
+          cat release-source.zip
       
       - name: Create Release
         id: create_release
