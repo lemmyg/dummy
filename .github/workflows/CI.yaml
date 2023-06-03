@@ -3,7 +3,7 @@ name: Auto Release Workflow
 on:
   create:
     tags:
-      - 'v*' # Trigger on any tag starting with 'v'
+      - 'speakers-v*' # Trigger on any tag starting with 'v'
 
 jobs:
   auto_release_mic:
@@ -18,11 +18,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Generate Release Source Mic
+      - name: Generate Release Source
         run: |
           # Create a zip files containing all the files in the 'mic' and 'speakers' folders
           mkdir -p /tmp/output
-          zip -r /tmp/output/release-source-mic.zip mic/
+          zip -r /tmp/output/release-source-speakers.zip speakers/
       
       - name: Extract tag version
         id: extract_tag
@@ -32,9 +32,9 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            /tmp/output/release-source-mic.zip
+            /tmp/output/release-source-speakers.zip
           tag_name: ${{ github.ref }}
-          name: t2-apple-mic-${{ steps.extract_tag.outputs.tag }}
+          name: t2-apple-speakers-${{ steps.extract_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
