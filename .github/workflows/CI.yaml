@@ -39,12 +39,12 @@ jobs:
         run: |
           # Create a zip file containing all the files in the 'mic' folder
           zip -r release-source.zip mic/
-          cat release-source.zip
       
       - name: Create Release
         id: create_release
         run: |
           # Create the release using the 'gh' CLI with the PAT
+          cat release-source.zip
           gh release create ${{ steps.next_release.outputs.next_release }} release-source.zip --title "Release ${{ steps.next_release.outputs.next_release }}" --notes "Add release notes or description here"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
