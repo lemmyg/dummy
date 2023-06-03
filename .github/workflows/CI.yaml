@@ -8,10 +8,20 @@ on:
 jobs:
   auto_release_job:
     runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ github.workspace }}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
 
       - name: Determine Next Release
         id: next_release
@@ -28,20 +38,13 @@ jobs:
       - name: Generate Release Source
         run: |
           # Create a zip file containing all the files in the 'mic' folder
-          zip -r release-source-mic.zip mic/
+          zip -r release-source.zip mic/
       
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.next_release.outputs.next_release }}
-          release_name: "Release ${{ steps.next_release.outputs.next_release }}"
-          body: |
-            Add release notes or description here
-          draft: false
-          prerelease: false
+        run: |
+          # Create the release using the 'gh' CLI
+          gh release create ${{ steps.next_release.outputs.next_release }} release-source.zip --title "Release ${{ steps.next_release.outputs.next_release }}" --notes "Add release notes or description here" --draft false --prerelease false
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
@@ -52,3 +55,4 @@ jobs:
           asset_path: ./release-source.zip
           asset_name: release-source.zip
           asset_content_type: application/zip
+
