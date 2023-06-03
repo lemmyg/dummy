@@ -28,14 +28,24 @@ jobs:
       - name: Extract tag version
         id: extract_tag
         run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
-      - name: "Release"
+      - name: "Release Mic"
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            /tmp/output/release-source-*.zip
+            /tmp/output/release-source-mic.zip
           tag_name: ${{ github.ref }}
-          name: Release ${{ steps.extract_tag.outputs.tag }}
+          name: t2-apple-mic-${{ steps.extract_tag.outputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Release Speakers"
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            /tmp/output/release-source-speakers.zip
+          tag_name: ${{ github.ref }}
+          name: t2-apple-speakers-${{ steps.extract_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
