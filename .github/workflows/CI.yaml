@@ -1,0 +1,45 @@
+name: Auto Release Workflow
+
+on:
+  create:
+    tags:
+      - 'v*' # Trigger on any tag starting with 'v'
+
+jobs:
+  auto_release_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Determine Next Release
+        id: next_release
+        run: |
+          # Retrieve the created tag name
+          CREATED_TAG=${{ github.ref }}
+          
+          # Remove the 'refs/tags/' prefix from the tag name
+          TAG_NAME=${CREATED_TAG#refs/tags/}
+          
+          # Output the tag name as the next release version
+          echo "::set-output name=next_release::$TAG_NAME"
+
+      - name: Generate Release Source
+        run: |
+          # Create a zip file containing all the files in the 'mic' folder
+          zip -r release-source.zip mic/
+      
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.next_release.outputs.next_release }}
+          release_name: "Release ${{ steps.next_release.outputs.next_release }}"
+          body: |
+            Add release notes or description here
+          draft: false
+          prerelease: false
+          asset_paths: |
+            release-source.zip
