@@ -65,6 +65,6 @@ jobs:
           files: |
             /tmp/output/release-source-speakers.zip
           tag_name: ${{ github.ref }}
-          name: t2-apple-mic-${{ steps.extract_tag.outputs.tag }}
+          name: t2-apple-speakers-${{ steps.extract_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
