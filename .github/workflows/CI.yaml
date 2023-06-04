@@ -3,8 +3,9 @@ name: Auto Release Workflow
 on:
   create:
     tags:
-      - 'v*' # Trigger on any tag starting with 'v'
-
+      - 'mic-v*' # Trigger on any tag starting with 'v'
+    branches:
+      - mic
 jobs:
   auto_release_mic:
     runs-on: ubuntu-latest
